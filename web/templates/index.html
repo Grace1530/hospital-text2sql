@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hospital Text-to-SQL</title>
+<style>
+  :root {
+    --bg: #f4f6f8;
+    --panel: #ffffff;
+    --border: #dbe1e8;
+    --text: #1f2933;
+    --muted: #6b7280;
+    --accent: #1d6f8c;
+    --accent-dark: #145268;
+    --ok: #1b7f4c;
+    --err: #b3261e;
+    --code-bg: #0f172a;
+    --code-text: #e2e8f0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header {
+    background: var(--accent-dark);
+    color: white;
+    padding: 20px 32px;
+  }
+  header h1 { margin: 0; font-size: 1.4rem; }
+  header p { margin: 4px 0 0; opacity: 0.85; font-size: 0.9rem; }
+  main {
+    max-width: 900px;
+    margin: 24px auto;
+    padding: 0 16px 48px;
+  }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  textarea, input[type=text] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: inherit;
+  }
+  textarea { min-height: 70px; resize: vertical; }
+  button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-right: 8px;
+  }
+  button:hover { background: var(--accent-dark); }
+  button:disabled { background: #9aa5b1; cursor: not-allowed; }
+  pre#sqlOut {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 14px;
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 0.88rem;
+    min-height: 24px;
+  }
+  .status-row { display: flex; gap: 16px; align-items: center; margin: 10px 0; flex-wrap: wrap; }
+  .badge { padding: 3px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }
+  .badge.ok { background: #e3f6ea; color: var(--ok); }
+  .badge.err { background: #fbe9e7; color: var(--err); }
+  .meta { color: var(--muted); font-size: 0.85rem; }
+  table { border-collapse: collapse; width: 100%; margin-top: 12px; font-size: 0.88rem; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: #eef2f5; }
+  .table-scroll { overflow-x: auto; }
+  #modelStatus { font-size: 0.85rem; margin-top: 6px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Hospital Text-to-SQL</h1>
+  <p>Ask a question in plain English. A Transformer trained from scratch (no external LLM) generates the SQL, which is validated as read-only before running against the hospital database.</p>
+  <div id="modelStatus" class="meta">Checking model status...</div>
+</header>
+<main>
+  <div class="panel">
+    <label for="question"><strong>Question</strong></label>
+    <textarea id="question" placeholder="e.g. How many doctors work in Cardiology?"></textarea>
+    <div>
+      <button id="generateBtn">Generate SQL</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <strong>Generated SQL</strong>
+    <div class="status-row">
+      <span id="validBadge" class="badge" style="display:none;"></span>
+      <span id="genTime" class="meta"></span>
+    </div>
+    <pre id="sqlOut">(no SQL generated yet)</pre>
+    <button id="executeBtn" disabled>Execute Query</button>
+  </div>
+
+  <div class="panel">
+    <strong>Results</strong>
+    <div class="status-row">
+      <span id="execTime" class="meta"></span>
+      <span id="rowCount" class="meta"></span>
+    </div>
+    <div id="errorBox" class="badge err" style="display:none;"></div>
+    <div class="table-scroll"><table id="resultsTable"></table></div>
+  </div>
+</main>
+
+<script>
+let currentSql = "";
+
+async function checkStatus() {
+  const el = document.getElementById("modelStatus");
+  try {
+    const res = await fetch("/api/status");
+    const data = await res.json();
+    if (data.model_loaded) {
+      el.textContent = "Model loaded from " + data.checkpoint_path;
+    } else {
+      el.textContent = "No model checkpoint loaded yet (" + (data.error || "not found") + "). Train a checkpoint first (see docs/).";
+    }
+  } catch (e) {
+    el.textContent = "Could not reach backend.";
+  }
+}
+
+document.getElementById("generateBtn").addEventListener("click", async () => {
+  const question = document.getElementById("question").value.trim();
+  if (!question) return;
+  const btn = document.getElementById("generateBtn");
+  btn.disabled = true;
+  document.getElementById("sqlOut").textContent = "Generating...";
+  document.getElementById("validBadge").style.display = "none";
+  document.getElementById("executeBtn").disabled = true;
+
+  try {
+    const res = await fetch("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question }),
+    });
+    const data = await res.json();
+    if (data.error) {
+      document.getElementById("sqlOut").textContent = data.error;
+      return;
+    }
+    currentSql = data.generated_sql;
+    document.getElementById("sqlOut").textContent = data.generated_sql || "(empty)";
+    const badge = document.getElementById("validBadge");
+    badge.style.display = "inline-block";
+    if (data.is_valid) {
+      badge.textContent = "Valid read-only SQL";
+      badge.className = "badge ok";
+      document.getElementById("executeBtn").disabled = false;
+    } else {
+      badge.textContent = "Rejected: " + data.validation_reason;
+      badge.className = "badge err";
+    }
+    document.getElementById("genTime").textContent =
+      "generated in " + data.generation_time_ms.toFixed(1) + " ms";
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+document.getElementById("executeBtn").addEventListener("click", async () => {
+  if (!currentSql) return;
+  const btn = document.getElementById("executeBtn");
+  btn.disabled = true;
+  document.getElementById("errorBox").style.display = "none";
+  const table = document.getElementById("resultsTable");
+  table.innerHTML = "";
+
+  try {
+    const res = await fetch("/api/execute", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sql: currentSql }),
+    });
+    const data = await res.json();
+    document.getElementById("execTime").textContent =
+      "executed in " + data.execution_time_ms.toFixed(1) + " ms";
+    document.getElementById("rowCount").textContent = data.row_count + " row(s)";
+
+    if (data.error) {
+      const box = document.getElementById("errorBox");
+      box.style.display = "inline-block";
+      box.textContent = data.error;
+      return;
+    }
+
+    if (data.columns && data.columns.length) {
+      const thead = document.createElement("tr");
+      data.columns.forEach(c => {
+        const th = document.createElement("th");
+        th.textContent = c;
+        thead.appendChild(th);
+      });
+      table.appendChild(thead);
+      data.rows.forEach(row => {
+        const tr = document.createElement("tr");
+        row.forEach(v => {
+          const td = document.createElement("td");
+          td.textContent = v === null ? "NULL" : v;
+          tr.appendChild(td);
+        });
+        table.appendChild(tr);
+      });
+    }
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+checkStatus();
+</script>
+</body>
+</html>
