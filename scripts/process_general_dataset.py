@@ -84,6 +84,7 @@ def main() -> None:
                 "tables": ex.tables,
                 "domain": ex.domain,
                 "result_row_count": ex.result_row_count,
+                "setup_sql": ex.setup_sql,
                 "source": ex.source,
             }
             f.write(json.dumps(record) + "\n")

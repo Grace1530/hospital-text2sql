@@ -46,6 +46,7 @@ class GeneralExample:
     tables: list[str]
     domain: str
     result_row_count: int
+    setup_sql: str  # original CREATE+INSERT context, so evaluation can rebuild this exact scratch DB
     source: str = "gretel_synthetic_text_to_sql"
 
 
@@ -134,6 +135,7 @@ def process_row(row: dict) -> tuple[GeneralExample | None, str]:
             tables=tables,
             domain=row.get("domain", ""),
             result_row_count=len(result),
+            setup_sql=context,
         )
         return example, "ok"
     finally:
