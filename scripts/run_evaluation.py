@@ -41,6 +41,7 @@ def main() -> None:
     parser.add_argument("--checkpoint", required=True)
     parser.add_argument("--split", required=True)
     parser.add_argument("--limit", type=int, default=None)
+    parser.add_argument("--max-new-tokens", type=int, default=128)
     parser.add_argument("--out-prefix", default="docs/evaluation_report")
     args = parser.parse_args()
 
@@ -73,7 +74,7 @@ def main() -> None:
                 continue
             known_tables = {r[0] for r in con.execute("SHOW TABLES").fetchall()}
 
-        predicted = engine.generate_sql(rec["question"], rec["schema"], max_new_tokens=128)
+        predicted = engine.generate_sql(rec["question"], rec["schema"], max_new_tokens=args.max_new_tokens)
         item = EvalItem(
             question=rec["question"],
             gold_sql=rec["sql"],
@@ -85,8 +86,8 @@ def main() -> None:
 
         if con is not hospital_con:
             con.close()
-        if (i + 1) % 50 == 0:
-            print(f"  {i+1}/{len(records)} ({time.time()-t0:.0f}s elapsed)")
+        if (i + 1) % 10 == 0:
+            print(f"  {i+1}/{len(records)} ({time.time()-t0:.0f}s elapsed)", flush=True)
 
     hospital_con.close()
 

@@ -1,0 +1,55 @@
+{
+  "checkpoint": "checkpoints/pipeline_check/last.pt",
+  "split": "data/splits/test.jsonl",
+  "n_evaluated": 40,
+  "n_skipped": 0,
+  "overall": {
+    "exact_match_rate": 0.0,
+    "execution_accuracy": 0.0,
+    "valid_sql_rate": 0.0,
+    "table_accuracy": 0.0,
+    "column_accuracy": 0.0,
+    "join_accuracy": 0.775,
+    "aggregation_accuracy": 0.125,
+    "filter_accuracy": 0.375,
+    "syntax_error_rate": 1.0
+  },
+  "by_difficulty": {
+    "easy": {
+      "n": 19,
+      "exact_match_rate": 0.0,
+      "execution_accuracy": 0.0,
+      "valid_sql_rate": 0.0,
+      "table_accuracy": 0.0,
+      "column_accuracy": 0.0,
+      "join_accuracy": 1.0,
+      "aggregation_accuracy": 0.2631578947368421,
+      "filter_accuracy": 0.15789473684210525,
+      "syntax_error_rate": 1.0
+    },
+    "hard": {
+      "n": 3,
+      "exact_match_rate": 0.0,
+      "execution_accuracy": 0.0,
+      "valid_sql_rate": 0.0,
+      "table_accuracy": 0.0,
+      "column_accuracy": 0.0,
+      "join_accuracy": 0.6666666666666666,
+      "aggregation_accuracy": 0.0,
+      "filter_accuracy": 0.3333333333333333,
+      "syntax_error_rate": 1.0
+    },
+    "medium": {
+      "n": 18,
+      "exact_match_rate": 0.0,
+      "execution_accuracy": 0.0,
+      "valid_sql_rate": 0.0,
+      "table_accuracy": 0.0,
+      "column_accuracy": 0.0,
+      "join_accuracy": 0.5555555555555556,
+      "aggregation_accuracy": 0.0,
+      "filter_accuracy": 0.6111111111111112,
+      "syntax_error_rate": 1.0
+    }
+  }
+}
