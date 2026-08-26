@@ -1,0 +1,37 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+
+# DuckDB (regenerate via scripts/build_database.py — reproducible from raw data)
+database/*.duckdb
+database/*.duckdb.wal
+
+# Generated datasets / processed data (reproducible via scripts/)
+data/processed/*
+data/datasets/*
+data/splits/*
+!data/processed/.gitkeep
+!data/datasets/.gitkeep
+!data/splits/.gitkeep
+
+# Model checkpoints (large binary artifacts)
+checkpoints/*
+!checkpoints/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Secrets
+.env
+*.key

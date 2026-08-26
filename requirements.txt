@@ -1,0 +1,27 @@
+# Core
+numpy>=1.26,<2.0
+pyyaml>=6.0
+tqdm>=4.66
+
+# Database
+duckdb>=1.0.0
+
+# SQL parsing / validation / dialect handling (NOT a language model — a SQL parser library)
+sqlglot>=25.0.0
+
+# Deep learning (our own Transformer implementation is built on top of this framework)
+# On CPU dev machine: installs CPU build automatically.
+# On the NVIDIA GPU machine: install the matching CUDA build first, see README.md.
+torch>=2.2.0
+
+# Web application
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+jinja2>=3.1.0
+python-multipart>=0.0.9
+
+# Testing
+pytest>=8.0.0
+
+# Dataset acquisition (public Text-to-SQL datasets)
+requests>=2.31.0

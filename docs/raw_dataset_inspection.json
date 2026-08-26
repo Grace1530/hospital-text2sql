@@ -1,0 +1,1080 @@
+{
+  "raw_file": "data\\raw\\Hospital_Management_System.sql",
+  "dialect": "Microsoft SQL Server (T-SQL)",
+  "num_tables": 14,
+  "tables": {
+    "Department": {
+      "order": 0,
+      "columns": [
+        {
+          "name": "dept_Id",
+          "type": "Int",
+          "is_primary_key": true
+        },
+        {
+          "name": "dept_Name",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        }
+      ],
+      "foreign_keys": [],
+      "row_count": 31,
+      "primary_key_column": "dept_Id",
+      "duplicate_primary_keys": {},
+      "null_value_columns": {},
+      "sample_row": {
+        "dept_Id": "101",
+        "dept_Name": "Cardiology"
+      }
+    },
+    "Room": {
+      "order": 1,
+      "columns": [
+        {
+          "name": "room_No",
+          "type": "Int",
+          "is_primary_key": true
+        },
+        {
+          "name": "dept_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "room_Type",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "column": "dept_Id",
+          "ref_table": "Department",
+          "ref_column": "dept_Id"
+        }
+      ],
+      "row_count": 391,
+      "primary_key_column": "room_No",
+      "duplicate_primary_keys": {},
+      "null_value_columns": {},
+      "sample_row": {
+        "room_No": "1",
+        "dept_Id": "101",
+        "room_Type": "Consultation Room"
+      }
+    },
+    "Doctor": {
+      "order": 2,
+      "columns": [
+        {
+          "name": "doct_Id",
+          "type": "Int",
+          "is_primary_key": true
+        },
+        {
+          "name": "dept_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "FName",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "LName",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "Gender",
+          "type": "CHAR",
+          "is_primary_key": false
+        },
+        {
+          "name": "contact_No",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "surgeon_Type",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "office_No",
+          "type": "Int",
+          "is_primary_key": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "column": "dept_Id",
+          "ref_table": "Department",
+          "ref_column": "dept_Id"
+        },
+        {
+          "column": "office_No",
+          "ref_table": "Room",
+          "ref_column": "room_No"
+        }
+      ],
+      "row_count": 400,
+      "primary_key_column": "doct_Id",
+      "duplicate_primary_keys": {},
+      "null_value_columns": {
+        "surgeon_Type": 362,
+        "office_No": 38
+      },
+      "sample_row": {
+        "doct_Id": "1001",
+        "dept_Id": "101",
+        "FName": "Dr. Najeeb",
+        "LName": "Basir",
+        "Gender": "M",
+        "contact_No": "+92 3226702403",
+        "surgeon_Type": "None",
+        "office_No": "1"
+      }
+    },
+    "Nurse": {
+      "order": 3,
+      "columns": [
+        {
+          "name": "nurse_Id",
+          "type": "Int",
+          "is_primary_key": true
+        },
+        {
+          "name": "dept_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "FName",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "LName",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "Gender",
+          "type": "Char",
+          "is_primary_key": false
+        },
+        {
+          "name": "conatct_No",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "column": "dept_Id",
+          "ref_table": "Department",
+          "ref_column": "dept_Id"
+        }
+      ],
+      "row_count": 500,
+      "primary_key_column": "nurse_Id",
+      "duplicate_primary_keys": {},
+      "null_value_columns": {},
+      "sample_row": {
+        "nurse_Id": "3001",
+        "dept_Id": "101",
+        "FName": "Daniyal",
+        "LName": "Gujjar",
+        "Gender": "M",
+        "conatct_No": "+92 3547828228"
+      }
+    },
+    "Helpers": {
+      "order": 4,
+      "columns": [
+        {
+          "name": "helper_Id",
+          "type": "Int",
+          "is_primary_key": true
+        },
+        {
+          "name": "dept_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "FName",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "LName",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "Gender",
+          "type": "Char",
+          "is_primary_key": false
+        },
+        {
+          "name": "contact_No",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "column": "dept_Id",
+          "ref_table": "Department",
+          "ref_column": "dept_Id"
+        }
+      ],
+      "row_count": 1100,
+      "primary_key_column": "helper_Id",
+      "duplicate_primary_keys": {},
+      "null_value_columns": {},
+      "sample_row": {
+        "helper_Id": "8001",
+        "dept_Id": "106",
+        "FName": "Qamar",
+        "LName": "Jan",
+        "Gender": "M",
+        "contact_No": "+92 3181605664"
+      }
+    },
+    "Ward": {
+      "order": 5,
+      "columns": [
+        {
+          "name": "ward_No",
+          "type": "Int",
+          "is_primary_key": true
+        },
+        {
+          "name": "ward_Name",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "dept_Id",
+          "type": "Int",
+          "is_primary_key": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "column": "dept_Id",
+          "ref_table": "Department",
+          "ref_column": "dept_Id"
+        }
+      ],
+      "row_count": 63,
+      "primary_key_column": "ward_No",
+      "duplicate_primary_keys": {},
+      "null_value_columns": {},
+      "sample_row": {
+        "ward_No": "501",
+        "ward_Name": "ICU",
+        "dept_Id": "101"
+      }
+    },
+    "Bed": {
+      "order": 6,
+      "columns": [
+        {
+          "name": "bed_No",
+          "type": "Int",
+          "is_primary_key": true
+        },
+        {
+          "name": "ward_No",
+          "type": "Int",
+          "is_primary_key": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "column": "ward_No",
+          "ref_table": "Ward",
+          "ref_column": "ward_No"
+        }
+      ],
+      "row_count": 500,
+      "primary_key_column": "bed_No",
+      "duplicate_primary_keys": {},
+      "null_value_columns": {},
+      "sample_row": {
+        "bed_No": "1",
+        "ward_No": "501"
+      }
+    },
+    "Patients": {
+      "order": 7,
+      "columns": [
+        {
+          "name": "patient_Id",
+          "type": "Int",
+          "is_primary_key": true
+        },
+        {
+          "name": "FName",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "LName",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "Gender",
+          "type": "Char",
+          "is_primary_key": false
+        },
+        {
+          "name": "Date_Of_Birth",
+          "type": "Date",
+          "is_primary_key": false
+        },
+        {
+          "name": "contact_No",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "pt_Address",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        }
+      ],
+      "foreign_keys": [],
+      "row_count": 1500,
+      "primary_key_column": "patient_Id",
+      "duplicate_primary_keys": {},
+      "null_value_columns": {},
+      "sample_row": {
+        "patient_Id": "100",
+        "FName": "Kamil",
+        "LName": "Shah",
+        "Gender": "M",
+        "Date_Of_Birth": "1951-07-14",
+        "contact_No": "+927860219572",
+        "pt_Address": "Market 134, Susan Road, Faisalabad, Punjab, Pakistan"
+      }
+    },
+    "BedRecords": {
+      "order": 8,
+      "columns": [
+        {
+          "name": "admission_Id",
+          "type": "Int",
+          "is_primary_key": true
+        },
+        {
+          "name": "bed_No",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "patient_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "nurse_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "helper_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "admission_Date",
+          "type": "Date",
+          "is_primary_key": false
+        },
+        {
+          "name": "discharge_Date",
+          "type": "Date",
+          "is_primary_key": false
+        },
+        {
+          "name": "amount",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "mode_of_payment",
+          "type": "Varchar(50)",
+          "is_primary_key": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "column": "bed_No",
+          "ref_table": "Bed",
+          "ref_column": "bed_No"
+        },
+        {
+          "column": "patient_Id",
+          "ref_table": "Patients",
+          "ref_column": "patient_Id"
+        },
+        {
+          "column": "nurse_Id",
+          "ref_table": "Nurse",
+          "ref_column": "nurse_Id"
+        },
+        {
+          "column": "helper_Id",
+          "ref_table": "Helpers",
+          "ref_column": "helper_Id"
+        }
+      ],
+      "row_count": 1000,
+      "primary_key_column": "admission_Id",
+      "duplicate_primary_keys": {},
+      "null_value_columns": {},
+      "sample_row": {
+        "admission_Id": "100011",
+        "bed_No": "42",
+        "patient_Id": "1092",
+        "nurse_Id": "3373",
+        "helper_Id": "8037",
+        "admission_Date": "2025-03-21",
+        "discharge_Date": "2025-03-24",
+        "amount": "32844",
+        "mode_of_payment": "Insurance"
+      }
+    },
+    "RoomRecords": {
+      "order": 9,
+      "columns": [
+        {
+          "name": "admisson_ID",
+          "type": "Int",
+          "is_primary_key": true
+        },
+        {
+          "name": "room_no",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "patient_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "nurse_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "helper_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "admission_Date",
+          "type": "Date",
+          "is_primary_key": false
+        },
+        {
+          "name": "discharge_Date",
+          "type": "Date",
+          "is_primary_key": false
+        },
+        {
+          "name": "amount",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "mode_of_payment",
+          "type": "Varchar(50)",
+          "is_primary_key": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "column": "room_no",
+          "ref_table": "Room",
+          "ref_column": "room_No"
+        },
+        {
+          "column": "patient_Id",
+          "ref_table": "Patients",
+          "ref_column": "patient_Id"
+        },
+        {
+          "column": "nurse_Id",
+          "ref_table": "Nurse",
+          "ref_column": "nurse_Id"
+        },
+        {
+          "column": "helper_Id",
+          "ref_table": "Helpers",
+          "ref_column": "helper_Id"
+        }
+      ],
+      "row_count": 1000,
+      "primary_key_column": "admisson_ID",
+      "duplicate_primary_keys": {},
+      "null_value_columns": {},
+      "sample_row": {
+        "admisson_ID": "500001",
+        "room_no": "34",
+        "patient_Id": "1170",
+        "nurse_Id": "3418",
+        "helper_Id": "8436",
+        "admission_Date": "2024-12-17",
+        "discharge_Date": "2024-12-24",
+        "amount": "91007",
+        "mode_of_payment": "Insurance"
+      }
+    },
+    "Appointment": {
+      "order": 10,
+      "columns": [
+        {
+          "name": "appoIntment_Id",
+          "type": "Int",
+          "is_primary_key": true
+        },
+        {
+          "name": "patient_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "doct_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "reason",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "appointment_Date",
+          "type": "Date",
+          "is_primary_key": false
+        },
+        {
+          "name": "payment_amount",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "mode_of_payment",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "mode_of_appointment",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "appointment_status",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "column": "patient_Id",
+          "ref_table": "Patients",
+          "ref_column": "patient_Id"
+        },
+        {
+          "column": "doct_Id",
+          "ref_table": "Doctor",
+          "ref_column": "doct_Id"
+        }
+      ],
+      "row_count": 1000,
+      "primary_key_column": "appoIntment_Id",
+      "duplicate_primary_keys": {},
+      "null_value_columns": {},
+      "sample_row": {
+        "appoIntment_Id": "5000",
+        "patient_Id": "1057",
+        "doct_Id": "1027",
+        "reason": "Back Pain",
+        "appointment_Date": "2024-11-27",
+        "payment_amount": "2139",
+        "mode_of_payment": "Insurance",
+        "mode_of_appointment": "Call",
+        "appointment_status": "Completed"
+      }
+    },
+    "MedicalRecord": {
+      "order": 11,
+      "columns": [
+        {
+          "name": "record_Id",
+          "type": "Int",
+          "is_primary_key": true
+        },
+        {
+          "name": "doct_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "patient_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "visit_Date",
+          "type": "Date",
+          "is_primary_key": false
+        },
+        {
+          "name": "curr_Weight",
+          "type": "Decimal(10,2)",
+          "is_primary_key": false
+        },
+        {
+          "name": "curr_height",
+          "type": "Decimal(10,2)",
+          "is_primary_key": false
+        },
+        {
+          "name": "curr_Blood_Pressure",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "curr_Temp_F",
+          "type": "Decimal(10,2)",
+          "is_primary_key": false
+        },
+        {
+          "name": "diagnosis",
+          "type": "Varchar(500)",
+          "is_primary_key": false
+        },
+        {
+          "name": "treatment",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "next_Visit",
+          "type": "Date",
+          "is_primary_key": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "column": "doct_Id",
+          "ref_table": "Doctor",
+          "ref_column": "doct_Id"
+        },
+        {
+          "column": "patient_Id",
+          "ref_table": "Patients",
+          "ref_column": "patient_Id"
+        }
+      ],
+      "row_count": 3000,
+      "primary_key_column": "record_Id",
+      "duplicate_primary_keys": {},
+      "null_value_columns": {
+        "next_Visit": 1531
+      },
+      "sample_row": {
+        "record_Id": "1",
+        "doct_Id": "1027",
+        "patient_Id": "1057",
+        "visit_Date": "2025-02-06",
+        "curr_Weight": "62.89",
+        "curr_height": "156.21",
+        "curr_Blood_Pressure": "120/80",
+        "curr_Temp_F": "98.46",
+        "diagnosis": "Lumbar Strain",
+        "treatment": "Physical Therapy, NSAIDs",
+        "next_Visit": "2025-06-22"
+      }
+    },
+    "StaffShift": {
+      "order": 12,
+      "columns": [
+        {
+          "name": "shift_Id",
+          "type": "Int",
+          "is_primary_key": true
+        },
+        {
+          "name": "doct_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "nurse_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "helper_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "shift_Date",
+          "type": "Date",
+          "is_primary_key": false
+        },
+        {
+          "name": "shift_Start",
+          "type": "Time",
+          "is_primary_key": false
+        },
+        {
+          "name": "shift_End",
+          "type": "Time",
+          "is_primary_key": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "column": "doct_Id",
+          "ref_table": "Doctor",
+          "ref_column": "doct_Id"
+        },
+        {
+          "column": "nurse_Id",
+          "ref_table": "Nurse",
+          "ref_column": "nurse_Id"
+        },
+        {
+          "column": "helper_Id",
+          "ref_table": "Helpers",
+          "ref_column": "helper_Id"
+        }
+      ],
+      "row_count": 2058,
+      "primary_key_column": "shift_Id",
+      "duplicate_primary_keys": {},
+      "null_value_columns": {
+        "nurse_Id": 1558,
+        "helper_Id": 1558,
+        "doct_Id": 1000
+      },
+      "sample_row": {
+        "shift_Id": "70001",
+        "doct_Id": "1147",
+        "nurse_Id": "None",
+        "helper_Id": "None",
+        "shift_Date": "2025-05-19",
+        "shift_Start": "08:00:00",
+        "shift_End": "12:00:00"
+      }
+    },
+    "SurgeryRecord": {
+      "order": 13,
+      "columns": [
+        {
+          "name": "surgery_Id",
+          "type": "Int",
+          "is_primary_key": true
+        },
+        {
+          "name": "patient_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "surgeon_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "surgery_Type",
+          "type": "Varchar(100)",
+          "is_primary_key": false
+        },
+        {
+          "name": "surgery_Date",
+          "type": "Date",
+          "is_primary_key": false
+        },
+        {
+          "name": "start_Time",
+          "type": "Time",
+          "is_primary_key": false
+        },
+        {
+          "name": "end_Time",
+          "type": "Time",
+          "is_primary_key": false
+        },
+        {
+          "name": "room_no",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "notes",
+          "type": "Varchar(1000)",
+          "is_primary_key": false
+        },
+        {
+          "name": "nurse_Id",
+          "type": "Int",
+          "is_primary_key": false
+        },
+        {
+          "name": "helper_Id",
+          "type": "Int",
+          "is_primary_key": false
+        }
+      ],
+      "foreign_keys": [
+        {
+          "column": "patient_Id",
+          "ref_table": "Patients",
+          "ref_column": "patient_Id"
+        },
+        {
+          "column": "surgeon_Id",
+          "ref_table": "Doctor",
+          "ref_column": "doct_Id"
+        },
+        {
+          "column": "room_no",
+          "ref_table": "Room",
+          "ref_column": "room_No"
+        },
+        {
+          "column": "nurse_Id",
+          "ref_table": "Nurse",
+          "ref_column": "nurse_Id"
+        },
+        {
+          "column": "helper_Id",
+          "ref_table": "Helpers",
+          "ref_column": "helper_Id"
+        }
+      ],
+      "row_count": 1000,
+      "primary_key_column": "surgery_Id",
+      "duplicate_primary_keys": {},
+      "null_value_columns": {},
+      "sample_row": {
+        "surgery_Id": "10887",
+        "patient_Id": "359",
+        "surgeon_Id": "1164",
+        "surgery_Type": "Otolaryngologic (ENT) Surgery",
+        "surgery_Date": "2022-03-28",
+        "start_Time": "12:15:52",
+        "end_Time": "12:45:52",
+        "room_no": "271",
+        "notes": "Need special care",
+        "nurse_Id": "3322",
+        "helper_Id": "8311"
+      }
+    }
+  },
+  "referential_integrity": [
+    {
+      "table": "Room",
+      "column": "dept_Id",
+      "ref_table": "Department",
+      "ref_column": "dept_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "Doctor",
+      "column": "dept_Id",
+      "ref_table": "Department",
+      "ref_column": "dept_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "Doctor",
+      "column": "office_No",
+      "ref_table": "Room",
+      "ref_column": "room_No",
+      "dangling_count": 0
+    },
+    {
+      "table": "Nurse",
+      "column": "dept_Id",
+      "ref_table": "Department",
+      "ref_column": "dept_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "Helpers",
+      "column": "dept_Id",
+      "ref_table": "Department",
+      "ref_column": "dept_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "Ward",
+      "column": "dept_Id",
+      "ref_table": "Department",
+      "ref_column": "dept_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "Bed",
+      "column": "ward_No",
+      "ref_table": "Ward",
+      "ref_column": "ward_No",
+      "dangling_count": 0
+    },
+    {
+      "table": "BedRecords",
+      "column": "bed_No",
+      "ref_table": "Bed",
+      "ref_column": "bed_No",
+      "dangling_count": 0
+    },
+    {
+      "table": "BedRecords",
+      "column": "patient_Id",
+      "ref_table": "Patients",
+      "ref_column": "patient_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "BedRecords",
+      "column": "nurse_Id",
+      "ref_table": "Nurse",
+      "ref_column": "nurse_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "BedRecords",
+      "column": "helper_Id",
+      "ref_table": "Helpers",
+      "ref_column": "helper_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "RoomRecords",
+      "column": "room_no",
+      "ref_table": "Room",
+      "ref_column": "room_No",
+      "dangling_count": 0
+    },
+    {
+      "table": "RoomRecords",
+      "column": "patient_Id",
+      "ref_table": "Patients",
+      "ref_column": "patient_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "RoomRecords",
+      "column": "nurse_Id",
+      "ref_table": "Nurse",
+      "ref_column": "nurse_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "RoomRecords",
+      "column": "helper_Id",
+      "ref_table": "Helpers",
+      "ref_column": "helper_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "Appointment",
+      "column": "patient_Id",
+      "ref_table": "Patients",
+      "ref_column": "patient_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "Appointment",
+      "column": "doct_Id",
+      "ref_table": "Doctor",
+      "ref_column": "doct_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "MedicalRecord",
+      "column": "doct_Id",
+      "ref_table": "Doctor",
+      "ref_column": "doct_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "MedicalRecord",
+      "column": "patient_Id",
+      "ref_table": "Patients",
+      "ref_column": "patient_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "StaffShift",
+      "column": "doct_Id",
+      "ref_table": "Doctor",
+      "ref_column": "doct_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "StaffShift",
+      "column": "nurse_Id",
+      "ref_table": "Nurse",
+      "ref_column": "nurse_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "StaffShift",
+      "column": "helper_Id",
+      "ref_table": "Helpers",
+      "ref_column": "helper_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "SurgeryRecord",
+      "column": "patient_Id",
+      "ref_table": "Patients",
+      "ref_column": "patient_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "SurgeryRecord",
+      "column": "surgeon_Id",
+      "ref_table": "Doctor",
+      "ref_column": "doct_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "SurgeryRecord",
+      "column": "room_no",
+      "ref_table": "Room",
+      "ref_column": "room_No",
+      "dangling_count": 0
+    },
+    {
+      "table": "SurgeryRecord",
+      "column": "nurse_Id",
+      "ref_table": "Nurse",
+      "ref_column": "nurse_Id",
+      "dangling_count": 0
+    },
+    {
+      "table": "SurgeryRecord",
+      "column": "helper_Id",
+      "ref_table": "Helpers",
+      "ref_column": "helper_Id",
+      "dangling_count": 0
+    }
+  ]
+}
