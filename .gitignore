@@ -10,6 +10,9 @@ __pycache__/
 database/*.duckdb
 database/*.duckdb.wal
 
+# Downloaded external raw datasets (reproducible via scripts/download_general_dataset.py)
+data/raw/external/
+
 # Generated datasets / processed data (reproducible via scripts/)
 data/processed/*
 data/datasets/*
