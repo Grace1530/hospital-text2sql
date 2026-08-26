@@ -79,6 +79,7 @@ def build_unified_records() -> list[dict]:
                 "source": "hospital",
                 "category": r["category"],
                 "difficulty": r["difficulty"],
+                "setup_sql": "",  # evaluation uses the real hospital DB for these
             }
         )
     for r in general_rows:
@@ -91,6 +92,7 @@ def build_unified_records() -> list[dict]:
                 "source": "general",
                 "category": r["category"],
                 "difficulty": r["difficulty"],
+                "setup_sql": r.get("setup_sql", ""),
             }
         )
     return records

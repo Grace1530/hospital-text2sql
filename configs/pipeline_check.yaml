@@ -1,0 +1,36 @@
+# Real-model-scale, short pipeline verification run (NOT a real training
+# run). Same architecture/hyperparameters as configs/base.yaml, but on a
+# small subset of the real data for only 2 epochs, purely to confirm the
+# full-size model (9.4M params) trains correctly end-to-end on this CPU
+# machine (correct shapes, no OOM, checkpointing works at real scale)
+# before handoff. See docs/gpu_readiness_check.md for the results and
+# measured CPU throughput used to justify moving to GPU for real training.
+
+tokenizer:
+  dir: checkpoints/tokenizer
+
+data:
+  train_path: data/splits/pipeline_check_train.jsonl
+  val_path: data/splits/pipeline_check_val.jsonl
+
+model:
+  vocab_size: 8000
+  d_model: 256
+  num_encoder_layers: 4
+  num_decoder_layers: 4
+  num_heads: 8
+  d_ff: 1024
+  dropout: 0.1
+  max_seq_len: 512
+
+training:
+  seed: 42
+  batch_size: 16
+  num_epochs: 2
+  warmup_steps: 50
+  grad_clip: 1.0
+  weight_decay: 0.01
+  max_src_len: 512
+  max_tgt_len: 200
+  log_every: 10
+  checkpoint_dir: checkpoints/pipeline_check
