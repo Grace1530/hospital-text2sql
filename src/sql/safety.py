@@ -45,6 +45,12 @@ ALLOWED_ROOT_TYPES = (exp.Select, exp.Union, exp.Except, exp.Intersect, exp.With
 _FORBIDDEN_RE = re.compile(
     r"\b(" + "|".join(FORBIDDEN_KEYWORDS) + r")\b", re.IGNORECASE
 )
+_STRING_LITERAL_RE = re.compile(r"'(?:[^']|'')*'")
+
+
+def _mask_string_literals(sql: str) -> str:
+    """Replace contents of '...' string literals so keyword scans never match data values (e.g. mode='Call')."""
+    return _STRING_LITERAL_RE.sub("''", sql)
 
 
 @dataclass
@@ -59,10 +65,12 @@ def validate_sql_safety(sql: str, known_tables: set[str] | None = None) -> Valid
     if not sql:
         return ValidationResult(False, "empty SQL")
 
-    if ";" in sql:
+    masked = _mask_string_literals(sql)
+
+    if ";" in masked:
         return ValidationResult(False, "multiple statements are not allowed")
 
-    if _FORBIDDEN_RE.search(sql):
+    if _FORBIDDEN_RE.search(masked):
         return ValidationResult(False, "forbidden keyword detected")
 
     try:

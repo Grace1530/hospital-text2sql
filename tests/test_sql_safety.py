@@ -85,3 +85,21 @@ def test_empty_sql_rejected():
 def test_syntax_error_rejected():
     r = validate_sql_safety("SELECT FROM WHERE", known_tables=KNOWN_TABLES)
     assert not r.is_safe
+
+
+def test_forbidden_word_inside_string_literal_is_not_flagged():
+    # 'Call' is a real data value (appointments.mode_of_appointment) and must
+    # not be confused with the CALL keyword.
+    r = validate_sql_safety(
+        "SELECT COUNT(DISTINCT patient_id) FROM appointments WHERE mode_of_appointment = 'Call'",
+        known_tables=KNOWN_TABLES,
+    )
+    assert r.is_safe, r.reason
+
+
+def test_semicolon_inside_string_literal_is_not_flagged():
+    r = validate_sql_safety(
+        "SELECT * FROM patients WHERE address = 'Flat 1; Block B'",
+        known_tables=KNOWN_TABLES,
+    )
+    assert r.is_safe, r.reason
