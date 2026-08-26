@@ -1,0 +1,37 @@
+# Full-scale model/training configuration.
+#
+# This config defines the REAL target model, sized for the ~10.5k-example
+# training corpus (see docs/training_corpus_report.md) and portable to the
+# NVIDIA GPU machine unchanged (device selection is automatic -- see
+# src/utils/device.py). Running this on the current CPU-only laptop is
+# ONLY used for pipeline verification at real scale (a handful of epochs),
+# never as the final trained model -- see HANDOFF_REPORT.md.
+
+tokenizer:
+  dir: checkpoints/tokenizer
+
+data:
+  train_path: data/splits/train.jsonl
+  val_path: data/splits/val.jsonl
+
+model:
+  vocab_size: 8000
+  d_model: 256
+  num_encoder_layers: 4
+  num_decoder_layers: 4
+  num_heads: 8
+  d_ff: 1024
+  dropout: 0.1
+  max_seq_len: 512   # measured: source tokens p95=96 p99=469 max=482 (see scripts/analyze_token_lengths.py)
+
+training:
+  seed: 42
+  batch_size: 32
+  num_epochs: 20
+  warmup_steps: 1000
+  grad_clip: 1.0
+  weight_decay: 0.01
+  max_src_len: 512
+  max_tgt_len: 200
+  log_every: 50
+  checkpoint_dir: checkpoints/base

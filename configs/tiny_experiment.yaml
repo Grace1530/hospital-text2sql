@@ -1,0 +1,33 @@
+# Phase 11 -- deliberately tiny end-to-end pipeline verification config.
+# Purpose: prove dataset -> tokenizer -> model -> training -> checkpoint ->
+# inference all work correctly on the CPU dev machine. NOT meant to produce
+# a usable model (tiny model, tiny data, very few epochs).
+
+tokenizer:
+  dir: checkpoints/tokenizer
+
+data:
+  train_path: data/splits/tiny_train.jsonl
+  val_path: data/splits/tiny_val.jsonl
+
+model:
+  vocab_size: 8000
+  d_model: 32
+  num_encoder_layers: 1
+  num_decoder_layers: 1
+  num_heads: 2
+  d_ff: 64
+  dropout: 0.1
+  max_seq_len: 256
+
+training:
+  seed: 42
+  batch_size: 4
+  num_epochs: 5
+  warmup_steps: 10
+  grad_clip: 1.0
+  weight_decay: 0.0
+  max_src_len: 256
+  max_tgt_len: 128
+  log_every: 5
+  checkpoint_dir: checkpoints/tiny_experiment
