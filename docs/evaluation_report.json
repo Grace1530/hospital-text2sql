@@ -1,0 +1,55 @@
+{
+  "checkpoint": "checkpoints/base/epoch_13.pt",
+  "split": "data/splits/test.jsonl",
+  "n_evaluated": 1312,
+  "n_skipped": 0,
+  "overall": {
+    "exact_match_rate": 0.07393292682926829,
+    "execution_accuracy": 0.27818627450980393,
+    "valid_sql_rate": 0.6219512195121951,
+    "table_accuracy": 0.5896468495934959,
+    "column_accuracy": 0.5419781987998452,
+    "join_accuracy": 0.894969512195122,
+    "aggregation_accuracy": 0.7846798780487805,
+    "filter_accuracy": 0.594677337398374,
+    "syntax_error_rate": 0.055640243902439025
+  },
+  "by_difficulty": {
+    "easy": {
+      "n": 627,
+      "exact_match_rate": 0.12440191387559808,
+      "execution_accuracy": 0.3448275862068966,
+      "valid_sql_rate": 0.6475279106858054,
+      "table_accuracy": 0.6399521531100478,
+      "column_accuracy": 0.6001291106554264,
+      "join_accuracy": 0.9944178628389154,
+      "aggregation_accuracy": 0.8317384370015949,
+      "filter_accuracy": 0.61632110579479,
+      "syntax_error_rate": 0.03508771929824561
+    },
+    "hard": {
+      "n": 157,
+      "exact_match_rate": 0.006369426751592357,
+      "execution_accuracy": 0.11904761904761904,
+      "valid_sql_rate": 0.535031847133758,
+      "table_accuracy": 0.456687898089172,
+      "column_accuracy": 0.42119350925083404,
+      "join_accuracy": 0.7932059447983014,
+      "aggregation_accuracy": 0.6167728237791932,
+      "filter_accuracy": 0.4142250530785562,
+      "syntax_error_rate": 0.15286624203821655
+    },
+    "medium": {
+      "n": 528,
+      "exact_match_rate": 0.03409090909090909,
+      "execution_accuracy": 0.2361963190184049,
+      "valid_sql_rate": 0.6174242424242424,
+      "table_accuracy": 0.5694444444444445,
+      "column_accuracy": 0.5088391354016354,
+      "join_accuracy": 0.8071338383838385,
+      "aggregation_accuracy": 0.7787247474747475,
+      "filter_accuracy": 0.6226325757575758,
+      "syntax_error_rate": 0.05113636363636364
+    }
+  }
+}

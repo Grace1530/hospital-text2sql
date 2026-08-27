@@ -1,0 +1,314 @@
+﻿# HANDOFF REPORT — GPU TRAINING PHASE COMPLETE
+
+Status: REAL GPU TRAINING COMPLETED SUCCESSFULLY.
+
+This report reflects the actual completed GPU training, full test evaluation,
+and prediction inspection performed on this machine.
+
+---
+
+## 1. Training environment
+
+- Device: CUDA
+- GPU: NVIDIA GeForce GTX 1650 Ti
+- PyTorch: 2.11.0+cu128
+- CUDA available: True
+- Model parameters: 9,421,824
+- Training examples: 10,461
+- Validation examples: 1,306
+- Test examples: 1,312
+
+---
+
+## 2. Training configuration
+
+Configuration: `configs/base.yaml`
+
+- Batch size: 32
+- Epochs: 20
+- Warmup steps: 1,000
+- Gradient clipping: 1.0
+- Weight decay: 0.01
+- Maximum source length: 512
+- Maximum target length: 200
+- Logging interval: 50
+- Optimizer: AdamW
+- Learning-rate schedule: warmup + inverse-square-root
+- Seed: 42
+
+---
+
+## 3. Training result
+
+Real GPU training completed for all 20 epochs.
+
+All epoch log entries report:
+
+`device: cuda`
+
+Approximate total logged epoch training time:
+~9 hours 8 minutes.
+
+Validation loss improved from:
+
+- Epoch 0: 2.6387
+- Epoch 5: 1.2262
+- Epoch 9: 1.0448
+- Epoch 10: 1.0421
+- Epoch 11: 1.0325
+- Epoch 12: 1.0274
+- Epoch 13: 1.0245
+
+Best validation loss:
+
+**Epoch 13 — val_loss = 1.0244608928517598**
+
+After epoch 13, validation loss increased:
+
+- Epoch 14: 1.0299
+- Epoch 15: 1.0462
+- Epoch 16: 1.0552
+- Epoch 17: 1.0688
+- Epoch 18: 1.0769
+- Epoch 19: 1.0878
+
+Therefore the selected best checkpoint is:
+
+`checkpoints/base/epoch_13.pt`
+
+---
+
+## 4. Checkpoints
+
+Completed checkpoints:
+
+`checkpoints/base/epoch_0.pt` through `epoch_19.pt`
+
+Best checkpoint:
+
+`checkpoints/base/epoch_13.pt`
+
+Checkpoint size:
+
+~113 MB
+
+The checkpoint contains the model state, optimizer state, scheduler
+state, epoch, global step, and configuration.
+
+`checkpoints/base/last.pt` is also available for resuming training.
+
+---
+
+## 5. Full test evaluation
+
+Evaluation was performed on:
+
+`data/splits/test.jsonl`
+
+Total evaluated:
+
+**1,312 examples**
+
+Skipped:
+
+**0**
+
+Best checkpoint evaluated:
+
+`checkpoints/base/epoch_13.pt`
+
+### Overall metrics
+
+| Metric | Result |
+|---|---:|
+| Exact match | 7.4% |
+| Execution accuracy | 27.8% |
+| Valid SQL | 62.2% |
+| Table accuracy | 59.0% |
+| Column accuracy | 54.2% |
+| JOIN accuracy | 89.5% |
+| Aggregation accuracy | 78.5% |
+| Filter accuracy | 59.5% |
+| Syntax error rate | 5.6% |
+
+Reports:
+
+- `docs/evaluation_report.json`
+- `docs/evaluation_report.md`
+
+---
+
+## 6. Evaluation by difficulty
+
+| Difficulty | n | Exact match | Execution accuracy | Valid SQL | Syntax error |
+|---|---:|---:|---:|---:|---:|
+| Easy | 627 | 12.4% | 34.5% | 64.8% | 3.5% |
+| Medium | 528 | 3.4% | 23.6% | 61.7% | 5.1% |
+| Hard | 157 | 0.6% | 11.9% | 53.5% | 15.3% |
+
+---
+
+## 7. Prediction inspection
+
+Representative predictions were inspected using:
+
+`scripts/inspect_predictions.py`
+
+The inspection found:
+
+- Exact matches: 4
+- Valid but incorrect: 47
+- Invalid/unsafe: 3
+
+Observed behavior:
+
+- Straightforward aggregation queries can be generated exactly.
+- JOIN and aggregation structures are relatively strong.
+- The primary weakness is semantic interpretation of more complex questions.
+- Errors include incorrect filters, wrong entities/values, oversimplified queries,
+  missing grouping/subqueries, and malformed or hallucinated SQL.
+- Some outputs contain severe token-generation corruption.
+
+This agrees with the aggregate evaluation results: SQL structure has been learned,
+but exact semantic text-to-SQL accuracy remains limited.
+
+---
+
+## 8. Important evaluation note
+
+The evaluation output reported:
+
+`scratch DB rebuild failed`
+
+for the general-dataset scratch database path.
+
+The full evaluation still processed all 1,312 test examples with zero skipped,
+but the execution-accuracy result should be interpreted together with this
+evaluation-pipeline limitation.
+
+---
+
+## 9. Existing project verification
+
+Before GPU training, the project had:
+
+**115 / 115 tests passing**
+
+These cover database construction, dataset quality, tokenizer behavior,
+Transformer architecture, training pipeline, evaluation, inference, SQL safety,
+and the web application.
+
+The GPU training itself completed successfully and produced all expected
+epoch checkpoints and structured training logs.
+
+---
+
+## 10. Inference and safety
+
+The project uses an internally trained encoder-decoder Transformer and does
+not require an external LLM API for SQL generation.
+
+Inference supports:
+
+- Greedy decoding
+- Beam search
+
+SQL safety is enforced before execution through the existing SQL validation
+pipeline.
+
+The model checkpoint is device-independent when loaded through the existing
+inference code.
+
+---
+
+## 11. Files relevant to teammate handoff
+
+### Best trained model
+
+`checkpoints/base/epoch_13.pt`
+
+### Training logs
+
+`checkpoints/base/train_log.jsonl`
+
+### Evaluation reports
+
+`docs/evaluation_report.json`
+
+`docs/evaluation_report.md`
+
+### GPU documentation
+
+`docs/gpu_readiness_check.md`
+
+### Prediction inspection utility
+
+`scripts/inspect_predictions.py`
+
+### Training configuration
+
+`configs/base.yaml`
+
+---
+
+## 12. What the teammate should do next
+
+1. Obtain/copy `checkpoints/base/epoch_13.pt`.
+2. Keep the existing tokenizer:
+   `checkpoints/tokenizer/`
+3. Use `configs/base.yaml` for reproducibility.
+4. Load the checkpoint through the existing inference pipeline.
+5. Point the web application to `epoch_13.pt`.
+6. Run the web application smoke test using the trained checkpoint.
+7. Review the evaluation reports.
+8. Decide whether further model improvement is required.
+9. If further training is attempted, use the existing checkpoint/resume
+   mechanism and document the new experiment separately.
+
+Do not assume that `last.pt` is the best-performing checkpoint.
+For the completed run, `epoch_13.pt` has the lowest validation loss.
+
+---
+
+## 13. Known limitations
+
+- Exact-match accuracy is currently low at 7.4%.
+- Execution accuracy is currently 27.8%.
+- Hard examples perform substantially worse than easy examples.
+- Semantic interpretation and complex query composition remain the main
+  model weaknesses.
+- Further hyperparameter/model experiments may improve performance, but
+  they should be treated as new experiments rather than replacing the
+  completed baseline.
+
+---
+
+## 14. CPU-phase archive
+
+The previous CPU-development handoff has been preserved separately as:
+
+`handoff_cpu_phase_archive.txt`
+
+The old report must not be used as the current GPU-training status because
+it predates the completed real GPU training.
+
+---
+
+## 15. Current conclusion
+
+The GPU training phase is COMPLETE.
+
+The selected baseline model is:
+
+`checkpoints/base/epoch_13.pt`
+
+The model successfully completed 20 training epochs on CUDA, full test
+evaluation on 1,312 examples, and representative prediction inspection.
+
+Further work is now primarily model/integration improvement and belongs to
+the next project phase.
+
+---
+
+*This report records measured results from the completed GPU run and does not
+claim that the model is more accurate than the reported evaluation results.*
